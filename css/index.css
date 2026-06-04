@@ -147,7 +147,7 @@
 
 .pagination a,
 .pagination span {
-  display: grid;
+  display: inline-grid;
   min-width: 40px;
   height: 40px;
   place-items: center;
@@ -158,6 +158,15 @@
 .pagination a.active {
   background: var(--color-primary);
   color: var(--color-primary-text);
+}
+
+.pagination a[aria-label] {
+  font-size: 2em;
+}
+
+.pagination a.disabled {
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 @media (max-width: 1024px) {
