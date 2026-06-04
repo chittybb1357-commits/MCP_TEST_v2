@@ -12,7 +12,7 @@ async function fetchProducts() {
         `<article class="product-card">
             <img src="${p.thumbnail}" alt="${p.title}">
             <div class="product-info">
-              <h3><a href="detail.html">${p.title}</a></h3>
+              <h3><a href="detail.html?id=${p.id}">${p.title}</a></h3>
               <p>${p.brand}</p>
               <div class="product-bottom">
                 <strong>${p.price}</strong>
