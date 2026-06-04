@@ -2,16 +2,21 @@ const productGrid = document.querySelector(".product-grid");
 const pager = document.querySelector(".pagination .pager");
 const pagerPrevBtn = document.querySelector(".pagination .prev");
 const pagerNextBtn = document.querySelector(".pagination .next");
+const categoryFilter = document.querySelector("#category-filter");
+const priceFilter = document.querySelector("#price-filter");
+const brandFilter = document.querySelector("#brand-filter");
 
-// pagination
+//pagination
 const countPerPage = 12;
-const pagerPerGroup = 5; // 페이저 그룹당 몇개의 페이저 생성
+const pagerPerGroup = 5; //페이저 그룹당 몇개의 페이저 생성
+
 let currentPage = 1;
 let paginationCount = 0;
 let currentGroup = 1;
 
 //상품 조회
 let products = [];
+let filteredData = [];
 
 async function fetchProducts() {
   try {
@@ -19,12 +24,15 @@ async function fetchProducts() {
     const data = await res.json();
 
     products = data.products;
-
-    console.log(products);
+    filteredData = products;
+    console.log(filteredData);
 
     //pagination 생성
-    makePagination(products.length);
-    renderProducts();
+    makePagination(filteredData.length);
+
+    renderProducts(filteredData);
+    renderCategories();
+    renderBrands();
   } catch {
   } finally {
   }
@@ -32,8 +40,8 @@ async function fetchProducts() {
 
 fetchProducts();
 
-function renderProducts() {
-  const pagedData = paginate(products, currentPage);
+function renderProducts(data) {
+  const pagedData = paginate(data, currentPage);
   const productHTML = pagedData.map(
     p =>
       `<article class="product-card">
@@ -55,7 +63,7 @@ function renderProducts() {
 function makePagination(total) {
   paginationCount = Math.ceil(total / countPerPage); // 예: 9
 
-  const pagerGroupCount = Math.ceil(paginationCount / pagerPerGroup); // 2
+  const pagerGroupCount = Math.ceil(paginationCount / pagerPerGroup); //2
 
   // 현재 그룹의 시작 페이지
   const startPage = (currentGroup - 1) * pagerPerGroup + 1;
@@ -84,7 +92,6 @@ function makePagination(total) {
   }
 
   const pagerBtns = pager.querySelectorAll("a");
-
   pagerBtns.forEach(btn => {
     btn.addEventListener("click", e => {
       e.preventDefault();
@@ -104,6 +111,7 @@ function makePagination(total) {
 function paginate(data, page) {
   const start = (page - 1) * countPerPage; //page 1 0, page 2 12
   const end = start + countPerPage;
+
   return data.slice(start, end);
 }
 
@@ -120,6 +128,44 @@ pagerNextBtn.addEventListener("click", e => {
 function moveGroup(direction) {
   currentGroup += direction;
   currentPage = (currentGroup - 1) * pagerPerGroup + 1; //1
-  makePagination(products.length);
-  renderProducts();
+
+  makePagination(filteredData.length);
+  renderProducts(filteredData);
+}
+
+//카테고리 생성
+function renderCategories() {
+  const categories = [...new Set(products.map(p => p.category))];
+  const frag = document.createDocumentFragment();
+
+  categories.forEach(c => {
+    const label = document.createElement("label");
+    label.innerHTML = `<input type="checkbox" name="category" value="${c}" /> ${c}`;
+    frag.appendChild(label);
+  });
+
+  categoryFilter.appendChild(frag);
+
+  const categoryLabel = categoryFilter.querySelectorAll("input");
+
+  categoryLabel.forEach(label => {
+    label.addEventListener("change", () => {
+      let selectedCategory = label.value;
+      const data = products.filter(p => p.category === selectedCategory);
+      renderProducts(data);
+    });
+  });
+}
+
+function renderBrands() {
+  const brands = [...new Set(products.map(p => p.brand))];
+  const frag = document.createDocumentFragment();
+
+  brands.forEach(b => {
+    const label = document.createElement("label");
+    label.innerHTML = `<input type="checkbox" name="brand" value="${b}" /> ${b}`;
+    frag.appendChild(label);
+  });
+
+  brandFilter.appendChild(frag);
 }
