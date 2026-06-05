@@ -8,7 +8,6 @@ async function fetchProducts() {
     const products = data.products.slice(0, 12);
     console.log(products);
     const frag = document.createDocumentFragment(); //<></>
-
     products.forEach(p => {
       const article = document.createElement("article");
       article.className = "product-card";
@@ -32,5 +31,4 @@ async function fetchProducts() {
   } finally {
   }
 }
-
 fetchProducts();

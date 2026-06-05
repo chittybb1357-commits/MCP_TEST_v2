@@ -159,11 +159,9 @@
   background: var(--color-primary);
   color: var(--color-primary-text);
 }
-
 .pagination a[aria-label] {
   font-size: 2em;
 }
-
 .pagination a.disabled {
   pointer-events: none;
   opacity: 0.5;
