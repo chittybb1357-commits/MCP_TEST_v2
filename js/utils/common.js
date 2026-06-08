@@ -28,13 +28,15 @@ export function updateCartCount() {
 
 //장바구니 버튼 클릭시 장바구니 추가
 export function addToCart(product, qty = 1) {
+  console.log(qty);
   if (!product) return;
   const cart = readCart();
   //이미 담긴 상품 확인
   const existingItem = cart.find(item => item.id === product.id);
   if (existingItem) {
     //그 상품 수량 증가
-    existingItem.qty++;
+    // existingItem.qty = existingItem.qty + qty;
+    existingItem.qty += qty;
   } else {
     //새 상품 추가, 수량 1
     cart.push({
@@ -42,7 +44,7 @@ export function addToCart(product, qty = 1) {
       title: product.title,
       brand: product.brand,
       thumb: product.thumbnail,
-      qty: 1,
+      qty: qty,
     });
   }
   writeCart(cart);

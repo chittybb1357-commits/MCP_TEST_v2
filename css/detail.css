@@ -275,6 +275,13 @@
   gap: 24px;
 }
 
+.tab-content > .detail-content {
+  display: none;
+}
+.tab-content > .detail-content.active {
+  display: block;
+}
+
 @media (max-width: 1024px) {
   .product-detail {
     grid-template-columns: 1fr;
