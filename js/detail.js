@@ -10,17 +10,19 @@ async function fetchProduct() {
   try {
     const res = await fetch("./data/products.json");
     const data = await res.json();
+
     currentProduct = data.products.find(product => product.id === productId);
 
     if (!currentProduct) {
       renderEmpty();
+
       return;
     }
-
     renderProduct(currentProduct);
     bindDetailEvents();
   } catch (error) {
     console.error("상품 정보를 불러오지 못했습니다.", error);
+
     renderEmpty();
   }
 }
@@ -171,8 +173,8 @@ function bindDetailEvents() {
 
 function makeStars(rating) {
   const rounded = Math.round(rating);
+
   return "★★★★★".slice(0, rounded) + "☆☆☆☆☆".slice(0, 5 - rounded);
 }
-
 fetchProduct();
 updateCartCount();
