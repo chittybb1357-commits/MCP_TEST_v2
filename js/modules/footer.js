@@ -1,4 +1,4 @@
-export function renderHeader() {
+export function renderFooter() {
   const target = document.querySelector(".site-footer");
 
   target.innerHTML = `
